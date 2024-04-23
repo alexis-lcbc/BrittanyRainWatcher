@@ -8,6 +8,8 @@ export const meta: MetaFunction = () => {
   return [
     { title: "Pleut-il en Bretagne" },
     { name: "description", content: "Un site tout bête qui répond simplement à la question : \"Pleut-il en Bretagne ?\"" },
+    {name: "og:title", content: "Pleut-il en Bretagne ?"},
+    {name: "og:description", content: "Un site tout bête qui répond simplement à la question \"Pleut-il en Bretagne ?\""}
   ];
 };
 
