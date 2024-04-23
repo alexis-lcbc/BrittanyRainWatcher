@@ -32,7 +32,7 @@ export default function Index() {
         <h1 style={{color: "white", marginBottom: "15vh", marginTop: "0vh", textShadow: "#ffffff 1px 0 10px"}}>{useLoaderData<typeof loader>() ? "NON." : "OUI."}</h1>
         </div>
       </div>
-      <div style={{marginTop: "10vh", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+      <div style={{marginTop: "10vh", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}>
         <h1 style={{margin: "0.2em"}}>{useLoaderData<typeof loader>() ? "Pas de pluie en ce moment en Bretagne!" : "Il pleut en ce moment en Bretagne!"}</h1>
         <p>Ce résultat est basé sur les observations en temps réel de stations météos au centre de la région Bretagne.<br/>
         Il peut donc être légèrement faussé ou un peu en retard mais donne une idée générale de la météo en ce moment.</p>
