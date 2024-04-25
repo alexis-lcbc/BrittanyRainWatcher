@@ -35,11 +35,11 @@ export default function Index() {
     <div style={{ fontFamily: "Roboto, sans-serif"}}>
       <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "100vh", backgroundImage: "url('https://source.unsplash.com/random?Bretagne,Morbihan,Finistere')", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center"}}>
         <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "115vh", width: "100vw", backdropFilter: "blur(15px)"}}>
-        <h1 style={{color: "white", marginBottom: "15vh", marginTop: "0vh", textShadow: "#ffffff 1px 0 10px"}}>{useLoaderData<typeof loader>().isRaining ? "NON." : "OUI."}</h1>
+        <h1 style={{color: "white", marginBottom: "15vh", marginTop: "0vh", textShadow: "#ffffff 1px 0 10px"}}>{useLoaderData<typeof loader>().isRaining ? "OUI." : "NON."}</h1>
         </div>
       </div>
       <div style={{marginTop: "10vh", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}>
-        <h1 style={{margin: "0.2em"}}>{useLoaderData<typeof loader>().isRaining ? "Pas de pluie en ce moment en Bretagne!" : "Il pleut en ce moment en Bretagne!"}</h1>
+        <h1 style={{margin: "0.2em"}}>{useLoaderData<typeof loader>().isRaining ? "Il pleut en ce moment en Bretagne!" : "Pas de pluie en ce moment en Bretagne!"}</h1>
         <p>Ce résultat est basé sur les observations en temps réel de stations météos au centre de la région Bretagne.<br/>
         Les informations météorologiques proviennent de <a href={"https://openweathermap.org/"} target={"_blank"} rel={"norefferer"} >OpenWeatherMap</a> & le code source est disponible sur <a href={"https://github.com/alexis-lcbc/BrittanyRainWatcher"} target={"_blank"} rel={"norefferer noreferrer"} >Github</a><br/>
         Il peut donc être légèrement faussé ou un peu en retard mais donne une idée générale de la météo en ce moment.</p>
