@@ -8,7 +8,7 @@ export const config = {
 
 
   export async function loader({request}: LoaderFunctionArgs) {
-    if(request.headers.get('Authorization') !== `Bearer ${process.env.STATSMAKER_CRONJOB_KEY}`) {
+    if(request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
       return json({status: "error", message: "Access denied : invalid/missing credentials."}, 401)
     }
     // Brittany weather collection
