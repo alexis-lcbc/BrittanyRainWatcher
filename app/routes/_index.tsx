@@ -22,20 +22,10 @@ export const links: LinksFunction = () => [
 ]
 
 export async function loader() {
-  const coordinates = {lat: 48.168656, lon: -2.966861}
     const serverCache = await kv.get<{isRaining: boolean, last_updated: number, rainOccurencesBzh: number, rainOccurencesNmd: number}>('weather')
-    console.log("Server cache value : ")
-    console.log(serverCache)
-    if(serverCache != null && serverCache.last_updated+1000*60*10 > Date.now()) {
+    if(serverCache != null) {
       return json({isRaining: serverCache.isRaining, source: "server cache", rainOccurencesBzh: serverCache.rainOccurencesBzh, rainOccurencesNmd: serverCache.rainOccurencesNmd}, 200);
-    } else {
-      const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${process.env.OPENWEATHERMAP_KEY}`)
-      const answers = await request.json()
-      const isRaining = answers.weather.main == "Thunderstorm" || answers.weather.main == "Drizzle" || answers.weather.main == "Rain"
-      return json({isRaining: isRaining, source: "live", rainOccurencesBzh: serverCache?.rainOccurencesBzh, rainOccurencesNmd: serverCache?.rainOccurencesNmd}, 200);
-    }
-
-
+    } 
 
  
   }
