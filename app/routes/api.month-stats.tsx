@@ -37,7 +37,13 @@ export const config = {
       }
       serverData.rainOccurencesNmd += 1
     }
+
+    if(serverData != null) {
+      serverData.lastExecMonth = (new Date()).getMonth()
+      serverData.last_updated = Date.now()
+    }
     try {
+       
       kv.set('weather', serverData)
 
     } catch (error) {
