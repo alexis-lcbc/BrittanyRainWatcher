@@ -8,7 +8,7 @@ export const config = {
 
 
   export async function loader({request}: LoaderFunctionArgs) {
-    console.log("[CRON JOBS] Month Stats activated")
+    console.log("[CRON JOBS] Month Stats ran")
     if(request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
       return json({status: "error", message: "Access denied : invalid/missing credentials."}, 401)
     }
@@ -20,9 +20,7 @@ export const config = {
     const serverData = await kv.get<{isRaining: boolean, last_updated: number, rainOccurencesBzh: number, rainOccurencesNmd: number, lastExecMonth: number}>('weather')
     
     if(bzhRain && serverData != null) {
-      if(serverData.rainOccurencesBzh == undefined) {
-        serverData.rainOccurencesBzh = 0
-      }
+
       serverData.rainOccurencesBzh += 1
     }
 
@@ -33,18 +31,21 @@ export const config = {
     const nmdRain = nmdAsw.weather.main == "Thunderstorm" || nmdAsw.weather.main == "Drizzle" || nmdAsw.weather.main == "Rain"
     
     if(nmdRain && serverData != null) {
-      if(serverData.rainOccurencesNmd == undefined) {
-        serverData.rainOccurencesNmd = 0
-      }
       serverData.rainOccurencesNmd += 1
     }
 
     if(serverData != null) {
+      if(serverData.rainOccurencesBzh == undefined) {
+        serverData.rainOccurencesBzh = 0
+      }
+      if(serverData.rainOccurencesNmd == undefined) {
+        serverData.rainOccurencesNmd = 0
+      }
       serverData.lastExecMonth = (new Date()).getMonth()
       serverData.last_updated = Date.now()
     }
     try {
-       
+       console.log(serverData)
       kv.set('weather', serverData)
 
     } catch (error) {
