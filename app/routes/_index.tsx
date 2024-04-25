@@ -63,7 +63,7 @@ export default function Index() {
         <p>Consultez la météo de la Bretagne sur <a href="https://meteofrance.com/previsions-meteo-france/bretagne/5">MétéoFrance</a>.</p>
         
         <h1 style={{margin: "0.2em"}}>Données historiques :</h1>
-        <p>Il y a plu {useLoaderData<typeof loader>().rainOccurencesBzh} fois ce mois-ci en Bretagne et {useLoaderData<typeof loader>().rainOccurencesNmd} fois en Normandie.</p>
+        <p>Il y a plu {useLoaderData<typeof loader>().rainOccurencesBzh || 0} fois ce mois-ci en Bretagne et {useLoaderData<typeof loader>().rainOccurencesNmd || 0} fois en Normandie.</p>
         <footer style={{borderTop: "2px black dotted", width: "100%", textAlign: "center"}}>
         <p>Copyright ©️ 2024 - Alexis LE CABELLEC | Tous droits réservés</p>
         </footer>
