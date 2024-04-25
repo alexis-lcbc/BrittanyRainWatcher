@@ -19,6 +19,9 @@ export const config = {
     const serverData = await kv.get<{isRaining: boolean, last_updated: number, rainOccurencesBzh: number, rainOccurencesNmd: number}>('weather')
     
     if(bzhRain && serverData != null) {
+      if(serverData.rainOccurencesBzh == undefined) {
+        serverData.rainOccurencesBzh = 0
+      }
       serverData.rainOccurencesBzh += 1
     }
 
@@ -29,6 +32,9 @@ export const config = {
     const nmdRain = nmdAsw.weather.main == "Thunderstorm" || nmdAsw.weather.main == "Drizzle" || nmdAsw.weather.main == "Rain"
     
     if(nmdRain && serverData != null) {
+      if(serverData.rainOccurencesNmd == undefined) {
+        serverData.rainOccurencesNmd = 0
+      }
       serverData.rainOccurencesNmd += 1
     }
     try {
