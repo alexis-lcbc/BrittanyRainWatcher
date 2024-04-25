@@ -16,7 +16,7 @@ export const config = {
     const bzhRqst = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${bzh.lat}&lon=${bzh.lon}&appid=${process.env.OPENWEATHERMAP_KEY}`)
     const bzhAsw = await bzhRqst.json()
     const bzhRain = bzhAsw.weather.main == "Thunderstorm" || bzhAsw.weather.main == "Drizzle" || bzhAsw.weather.main == "Rain"
-    const serverData = await kv.get<{isRaining: boolean, last_updated: number, rainOccurencesBzh: number, rainOccurencesNmd: number}>('weather')
+    const serverData = await kv.get<{isRaining: boolean, last_updated: number, rainOccurencesBzh: number, rainOccurencesNmd: number, lastExecMonth: number}>('weather')
     
     if(bzhRain && serverData != null) {
       if(serverData.rainOccurencesBzh == undefined) {
