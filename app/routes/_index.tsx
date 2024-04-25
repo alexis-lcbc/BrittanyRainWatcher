@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-no-target-blank */
 import { json, type MetaFunction, type LinksFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { kv } from "@vercel/kv";
+
 
 import styles from "./index.css?url";
 
@@ -20,25 +23,53 @@ export const links: LinksFunction = () => [
 
 export async function loader() {
   const coordinates = {lat: 48.168656, lon: -2.966861}
-  const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${process.env.OPENWEATHERMAP_KEY}`)
-  const answers = await request.json()
-  request.headers.set("Cache-Control", "max-age=3600")
-  return json({isRaining: answers.weather.main == "Thunderstorm" || answers.weather.main == "Drizzle" || answers.weather.main == "Rain"}, 200);
-}
+    const serverCache = await kv.get<{isRaining: boolean, last_updated: number, rainOccurencesBzh: number, rainOccurencesNmd: number}>('weather')
+    console.log("Server cache value : ")
+    console.log(serverCache)
+    if(serverCache != null && serverCache.last_updated+1000*60*10 > Date.now()) {
+      return json({isRaining: serverCache.isRaining, source: "server cache", rainOccurencesBzh: serverCache.rainOccurencesBzh, rainOccurencesNmd: serverCache.rainOccurencesNmd}, 200);
+    } else {
+      const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${process.env.OPENWEATHERMAP_KEY}`)
+      const answers = await request.json()
+      const isRaining = answers.weather.main == "Thunderstorm" || answers.weather.main == "Drizzle" || answers.weather.main == "Rain"
+      if(isRaining && serverCache) {
+        if(!serverCache?.rainOccurencesBzh) {
+          serverCache.rainOccurencesBzh = 1
+        } else {
+          serverCache.rainOccurencesBzh+=1
+        }
+      }
+      try {
+        await kv.set('weather', {isRaining: isRaining, last_updated: Date.now()})
+      } catch (e) {
+        console.error("Redis broke :(")
+      }
+      return json({isRaining: isRaining, source: "live", rainOccurencesBzh: serverCache.rainOccurencesBzh, rainOccurencesNmd: serverCache.rainOccurencesNmd}, 200);
+
+    }
+
+
+
+ 
+  }
 
 export default function Index() {
   return (
     <div style={{ fontFamily: "Roboto, sans-serif"}}>
       <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "100vh", backgroundImage: "url('https://source.unsplash.com/random?Bretagne,Morbihan,Finistere')", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center"}}>
         <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "115vh", width: "100vw", backdropFilter: "blur(15px)"}}>
-        <h1 style={{color: "white", marginBottom: "15vh", marginTop: "0vh", textShadow: "#ffffff 1px 0 10px"}}>{useLoaderData<typeof loader>() ? "NON." : "OUI."}</h1>
+        <h1 style={{color: "white", marginBottom: "15vh", marginTop: "0vh", textShadow: "#ffffff 1px 0 10px"}}>{useLoaderData<typeof loader>().isRaining ? "NON." : "OUI."}</h1>
         </div>
       </div>
       <div style={{marginTop: "10vh", display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}>
-        <h1 style={{margin: "0.2em"}}>{useLoaderData<typeof loader>() ? "Pas de pluie en ce moment en Bretagne!" : "Il pleut en ce moment en Bretagne!"}</h1>
+        <h1 style={{margin: "0.2em"}}>{useLoaderData<typeof loader>().isRaining ? "Pas de pluie en ce moment en Bretagne!" : "Il pleut en ce moment en Bretagne!"}</h1>
         <p>Ce résultat est basé sur les observations en temps réel de stations météos au centre de la région Bretagne.<br/>
+        Les informations météorologiques proviennent de <a href={"https://openweathermap.org/"} target={"_blank"} rel={"norefferer"} >OpenWeatherMap</a> & le code source est disponible sur <a href={"https://github.com/alexis-lcbc/BrittanyRainWatcher"} target={"_blank"} rel={"norefferer noreferrer"} >Github</a><br/>
         Il peut donc être légèrement faussé ou un peu en retard mais donne une idée générale de la météo en ce moment.</p>
-        <p>Consultez la météo de la Bretagne sur <a style={{color: "teal"}} href="https://meteofrance.com/previsions-meteo-france/bretagne/5">MétéoFrance</a>.</p>
+        <p>Consultez la météo de la Bretagne sur <a href="https://meteofrance.com/previsions-meteo-france/bretagne/5">MétéoFrance</a>.</p>
+        
+        <h1 style={{margin: "0.2em"}}>Données historiques :</h1>
+        <p>Il y a plu {2} fois ce mois-ci en Bretagne et {10} fois en Normandie.</p>
         <footer style={{borderTop: "2px black dotted", width: "100%", textAlign: "center"}}>
         <p>Copyright ©️ 2024 - Alexis LE CABELLEC | Tous droits réservés</p>
         </footer>
