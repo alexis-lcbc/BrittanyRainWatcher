@@ -32,19 +32,13 @@ export async function loader() {
       const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${process.env.OPENWEATHERMAP_KEY}`)
       const answers = await request.json()
       const isRaining = answers.weather.main == "Thunderstorm" || answers.weather.main == "Drizzle" || answers.weather.main == "Rain"
-      if(isRaining && serverCache) {
-        if(!serverCache?.rainOccurencesBzh) {
-          serverCache.rainOccurencesBzh = 1
-        } else {
-          serverCache.rainOccurencesBzh+=1
-        }
-      }
+
       try {
         await kv.set('weather', {isRaining: isRaining, last_updated: Date.now()})
       } catch (e) {
         console.error("Redis broke :(")
       }
-      return json({isRaining: isRaining, source: "live", rainOccurencesBzh: serverCache.rainOccurencesBzh, rainOccurencesNmd: serverCache.rainOccurencesNmd}, 200);
+      return json({isRaining: isRaining, source: "live", rainOccurencesBzh: serverCache?.rainOccurencesBzh, rainOccurencesNmd: serverCache?.rainOccurencesNmd}, 200);
 
     }
 
