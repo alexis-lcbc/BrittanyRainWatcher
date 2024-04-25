@@ -8,6 +8,7 @@ export const config = {
 
 
   export async function loader({request}: LoaderFunctionArgs) {
+    console.log("[CRON JOBS] Month Stats activated")
     if(request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
       return json({status: "error", message: "Access denied : invalid/missing credentials."}, 401)
     }
