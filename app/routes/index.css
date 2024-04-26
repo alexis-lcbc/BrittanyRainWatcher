@@ -22,3 +22,12 @@
   a {
     color: teal
   }
+
+  p {
+    text-align: justify;
+    padding: 1em;
+  }
+
+  footer p {
+    text-align: center;
+  }

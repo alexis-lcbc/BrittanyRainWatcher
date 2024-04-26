@@ -33,7 +33,7 @@ export async function loader() {
 export default function Index() {
   return (
     <div style={{ fontFamily: "Roboto, sans-serif"}}>
-      <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "100vh", backgroundImage: "url('https://source.unsplash.com/random?Bretagne,Morbihan,Finistere')", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center"}}>
+      <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "100vh", backgroundImage: "url('https://source.unsplash.com/random?Bretagne,Morbihan,Finistere')", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center",   backgroundAttachment: "fixed"}}>
         <div style={{fontSize: "10vw", display: 'flex', alignItems: 'center', justifyContent: 'center', height: "115vh", width: "100vw", backdropFilter: "blur(15px)"}}>
         <h1 style={{color: "white", marginBottom: "15vh", marginTop: "0vh", textShadow: "#ffffff 1px 0 10px"}}>{useLoaderData<typeof loader>().isRaining ? "OUI." : "NON."}</h1>
         </div>
