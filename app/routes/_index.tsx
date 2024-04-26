@@ -12,7 +12,8 @@ export const meta: MetaFunction = () => {
     { title: "Pleut-il en Bretagne" },
     { name: "description", content: "Un site tout bête qui répond simplement à la question : \"Pleut-il en Bretagne ?\"" },
     {name: "og:title", content: "Pleut-il en Bretagne ?"},
-    {name: "og:description", content: "Un site tout bête qui répond simplement à la question \"Pleut-il en Bretagne ?\""}
+    {name: "og:description", content: "Un site tout bête qui répond simplement à la question \"Pleut-il en Bretagne ?\""},
+    {name: "google-site-verification", content:"vG_EojN302DTYPkR29ikltHB6VajU1h_aTuyw0W0x2g"}
   ];
 };
 
