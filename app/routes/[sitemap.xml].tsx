@@ -2,18 +2,9 @@ export const loader = () => {
   // handle "GET" request
   // separating xml content from Response to keep clean code.
   const content = `
-    <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml">
+    <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
       <url>
         <loc>https://pleut-il-en-bretagne.fr/</loc>
-        
-        <xhtml:link
-            rel="alternate"
-            href="https://www.pleut-il-en-bretagne.fr"
-            />
-            <xhtml:link
-                rel="alternate"
-                href="https://pleut-il-en-bretagne.vercel.app"
-            />
         
             <lastmod>2024-04-27</lastmod>
         

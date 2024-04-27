@@ -14,12 +14,13 @@ export const meta: MetaFunction = () => {
     {name: "og:title", content: "Pleut-il en Bretagne ?"},
     {name: "og:description", content: "Un site tout bête qui répond simplement à la question \"Pleut-il en Bretagne ?\""},
     {name: "google-site-verification", content:"vG_EojN302DTYPkR29ikltHB6VajU1h_aTuyw0W0x2g"},
-    {name: "keywords", content: "Météo, Bretagne, Pleut-il, Pleut-il en Bretagne, Pluie, Soleil, Normandie, Cliché"}
+    {name: "keywords", content: "Météo, Bretagne, Pleut-il, Pleut-il en Bretagne, Pluie, Soleil, Normandie, Cliché"},
   ];
 };
 
 export const links: LinksFunction = () => [
-  {rel: "stylesheet", href: styles}
+  {rel: "stylesheet", href: styles},
+  {rel: "cannonical", href: "https://www.pleut-il-en-bretagne.fr"}
 
 ]
 
